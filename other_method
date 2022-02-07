@@ -1,0 +1,42 @@
+Step by step
+
+@extends()
+@section("content")
+@endsection
+
+on master page 
+{{View::make('header')}}
+@yield("content")
+{{View::make('footer')}}
+
+php artisan make:seeder UserSeeder
+
+
+use this in seeder file
+
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+ DB::table('users')->insert([
+            'name'=> 'Basant mallick',
+            'email'=> 'basant@gmail.com',
+            'password'=> Hash::make('1234')
+        ]);
+
+php artisan db:seed --class UserSeeder
+
+
+php artisan make:middleware UserAuth
+
+//kernal.php middleware
+ \Illuminate\Session\Middleware\StartSession::class,
+\App\Http\Middleware\UserAuth::class,
+
+// UserAuth
+
+if ($request->path()== "login" && $request->session()->has('user')) {
+           
+            return redirect('/home');
+
+        } 
